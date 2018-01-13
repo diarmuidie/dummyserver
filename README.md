@@ -12,9 +12,11 @@ If you have go installed on you system you can use it to download and install:
 go get github.com/diarmuidie/dummyserver
 ```
 
-Alternatively download a precompiled binary file from the [releases tab](https://github.com/diarmuidie/assistme/releases) (replace the link below with the binary suitable for your environment):
+Alternatively download a precompiled binary file from the [releases tab](https://github.com/diarmuidie/dummyserver/releases) (replace the link below with the binary suitable for your environment):
 ```bash
-curl -o dummyserver https://github.com/diarmuidie/assistme/releases/download/1.0.0/dummyserver-1.0.0-darwin-386
+curl -Lo dummyserver https://github.com/diarmuidie/dummyserver/releases/download/1.0.0/dummyserver-1.0.0-darwin-386
+
+chmod +x dummyserver
 ```
 
 ## Usage ##
