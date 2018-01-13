@@ -33,7 +33,7 @@ func jsonHandler(w http.ResponseWriter, r *http.Request) {
 
 func textHandler(w http.ResponseWriter, r *http.Request) {
 	d := getRequestData(r)
-	fmt.Fprintln(w, d)
+	fmt.Fprintln(w, "DummyServer response:", d)
 }
 
 func htmlHandler(w http.ResponseWriter, r *http.Request) {
@@ -87,6 +87,11 @@ func isJSONRequest(r *http.Request) bool {
 	return strings.Contains(c, "/json") || strings.Contains(c, "+json")
 }
 
+func isCLIRequest(r *http.Request) bool {
+	a := r.Header.Get("User-Agent")
+	return strings.Contains(a, "curl") || strings.Contains(a, "Wget")
+}
+
 func pageHandler(w http.ResponseWriter, r *http.Request) {
 	log.Printf("Request URI: \"%s\", Remote Address: \"%s\", Host: \"%s\"", r.RequestURI, r.RemoteAddr, r.Host)
 
@@ -100,6 +105,8 @@ func pageHandler(w http.ResponseWriter, r *http.Request) {
 	default:
 		if isJSONRequest(r) {
 			jsonHandler(w, r)
+		} else if isCLIRequest(r) {
+			textHandler(w, r)
 		} else {
 			htmlHandler(w, r)
 		}
