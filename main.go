@@ -33,7 +33,23 @@ func jsonHandler(w http.ResponseWriter, r *http.Request) {
 
 func textHandler(w http.ResponseWriter, r *http.Request) {
 	d := getRequestData(r)
-	fmt.Fprintln(w, "DummyServer response:", d)
+
+	t, _ := template.New("debug_page").Parse(`DummyServer
+
+Request Info:
+ Protocol: {{.Proto}}
+ Request URI: {{.RequestURI}}
+ Remote Address URI: {{.RemoteAddr}}
+ Host:</strong> {{.Host}}
+ Content Length: {{.ContentLength}}
+ Transfer Encoding: {{.TransferEncoding}}
+
+Request Headers:
+{{ range $key, $value := .Header }} {{ $key }}: {{ $value }}
+{{ end }}
+`)
+
+	t.Execute(w, d)
 }
 
 func htmlHandler(w http.ResponseWriter, r *http.Request) {
@@ -47,7 +63,7 @@ func htmlHandler(w http.ResponseWriter, r *http.Request) {
 		<link href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAB9klEQVR4AY2SA6wdQRiFt25YBbXNa9uubdu2bdu2bdu2+2zzdHYf912e5Avn+5WhCiZ6r7BmxD7xBsLzuHuGlMTX1tj4x+ZHMZdUdSh/IVJPQhwBNKQAkr44GRLf2zPi7xrHe5f3S2VEyri7XokJg/WIemhG/BMzI+fyyZGZ+EAj8db94+9dUhgNOqhUOsS8pyV3El5Ygtz33iWqQY98b6sGU8eYGM7vtTJ8uGlnFUj85ACua0qyu+8VtaULRB6T5T7U67ImeXbR7jZF/ENzN1aB8P1Cfc7hYm/okPjBDpddjxWzTSzxxHYr3l23I/mVvR+rQNR2TmkiZxLAcECCf3slSHhtZRU4uNGCl1fs+HJQOtX9iHvFB2g5H24FcnixkhN3c1StKqwCsTtF5X5tFyUEUuDNBsGVm+PqNHCboqWBu/XyPGFugZi7WkTdVLkRekbci/KUxk05K5o25WBgBzU2TSK7bm6W+X1+VRTkz9raS9zk5cuXl541e2H0rFkLsGXzLty4fgeP9890k3/Mr5r2Y261CpSnyJWazRKpAg5HCwweNBz9e/WK+r6g6tN8Bf5+n1d1mJuYM8H8+ctSFi1aiV27DuDe3Ue4c/sBDh06xPk5vyr/+/zqmuszqKKUrzRp1qx/k6Yc5ge2b9cFNpvrGeUn/wGWvMPf5TkecgAAAABJRU5ErkJggg==" rel="icon" type="image/png">
 	</head>
 	<body>
-		<h1>DummyServer Debug Info</h1>
+		<h1>DummyServer</h1>
 
 		<h2>Request Info</h2>
 		<ul>
